@@ -11,6 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 
 // // Endpoint to check if the users table exists and create it if not
 // app.get('/create-table', async (req, res) => {
