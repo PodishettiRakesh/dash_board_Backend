@@ -12,9 +12,12 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// Serve static files from the 'public' directory
+app.use('/public', express.static('public'));
+
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
-
+app.use('/programs', programsRoutes); // Use programs routes
 
 
 app.listen(PORT, () => {
