@@ -17,7 +17,8 @@ const submitApplication = async (req, res) => {
   const status = 'pending';
 
   try {
-   
+    const queryText = 'INSERT INTO applications (program_id, email, personal_details, educational_background, statement_of_purpose, status, submission_date) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING *';
+    const newApplication = await pool.query(queryText, [programId, email, personalDetails, educationalBackground, statementOfPurpose, status]);
 
     // Send confirmation email
     const mailOptions = {
