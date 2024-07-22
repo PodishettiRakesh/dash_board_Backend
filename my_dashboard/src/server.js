@@ -5,6 +5,7 @@ const pool = require('./db');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const programsRoutes = require('./routes/programs');
+const applicationRoutes = require('./routes/applicationRoutes');
 
 const app = express();
 const PORT = 5000;
@@ -18,6 +19,7 @@ app.use('/public', express.static('public'));
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/programs', programsRoutes); // Use programs routes
+app.use('/application', applicationRoutes);
 
 
 app.listen(PORT, () => {
