@@ -6,6 +6,6 @@ const { fetchPendingApplications, updateApplicationStatus } = require('../contro
 router.get('/applications', fetchPendingApplications);
 
 // Route to update application status
-// router.post('/applications/:id/status', updateApplicationStatus);
+router.post('/applications/:id/status', updateApplicationStatus);
 
 module.exports = router;
