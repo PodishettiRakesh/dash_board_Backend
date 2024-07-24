@@ -68,6 +68,15 @@ const updateApplicationStatus = async (req, res) => {
       Admissions Team`,
     };
 
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).send('Error sending email');
+      } else {
+        console.log('Email sent:', info.response);
+        res.status(200).json({ message: `Application ${status} and email sent` });
+      }
+    });
 
   } catch (error) {
     console.error('Error updating application status:', error);
