@@ -40,4 +40,38 @@ const fetchPendingApplications = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
+// Update application status and send email
+const updateApplicationStatus = async (req, res) => {
+  const applicationId = req.params.id;
+  const { status, email } = req.body;
+
+  try {
+    const updateQuery = 'UPDATE applications SET status = $1 WHERE id = $2 RETURNING *';
+    const result = await pool.query(updateQuery, [status, applicationId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    // Send email to the student
+    const mailOptions = {
+      from: 'podishettirakesh70@msitprogram.net',
+      to: email,
+      subject: `Application ${status.charAt(0).toUpperCase() + status.slice(1)}`,
+      text: `Dear Student,
+
+      Your application has been ${status}.
+
+      Best regards,
+      Rakesh Podishetti,
+      Admissions Team`,
+    };
+
+
+  } catch (error) {
+    console.error('Error updating application status:', error);
+    res.status(500).send('Server Error');
+  }
+};
 module.exports = { signup, login };
