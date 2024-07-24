@@ -29,4 +29,15 @@ const login = async (req, res) => {
   }
 };
 
+
+// Fetch all pending applications
+const fetchPendingApplications = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM applications WHERE status = $1', ['pending']);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching applications:', error);
+    res.status(500).send('Server Error');
+  }
+};
 module.exports = { signup, login };
