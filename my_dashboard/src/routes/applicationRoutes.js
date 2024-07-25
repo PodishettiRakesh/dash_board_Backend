@@ -5,7 +5,6 @@ const { submitApplication, getStudentApplications } = require('../controllers/ap
 const router = express.Router();
 
 router.post('/submit', submitApplication);
-router.get('/student', getStudentApplications); // New route for student applications/student', getStudentApplications); // New route for student applications
-
+router.get('/student/:email', getStudentApplications); // Modified route to capture email
 
 module.exports = router;

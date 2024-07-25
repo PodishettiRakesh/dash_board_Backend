@@ -63,7 +63,7 @@ const submitApplication = async (req, res) => {
 // controllers/applicationController.js
 
 const getStudentApplications = async (req, res) => {
-  const { email } = req.query;
+  const { email } = req.params; // Use req.params to get the email from the URL
 
   try {
     const query = `
@@ -72,7 +72,7 @@ const getStudentApplications = async (req, res) => {
       JOIN programs p ON a.program_id = p.program_id
       WHERE a.email = $1
     `;
-    const applications = await pool.query(queryText, [email]);
+    const applications = await pool.query(query, [email]);
 
     res.status(200).json(applications.rows);
   } catch (err) {
@@ -80,8 +80,5 @@ const getStudentApplications = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
-
-module.exports = { submitApplication, getStudentApplications };
-
 
 module.exports = { submitApplication, getStudentApplications };
