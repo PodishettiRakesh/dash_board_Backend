@@ -60,4 +60,19 @@ const submitApplication = async (req, res) => {
   }
 };
 
+// New function to get all applications for the logged-in student
+const getStudentApplications = async (req, res) => {
+  const studentEmail = req.user.email; // Assuming email is stored in the JWT token
+
+  try {
+    const queryText = 'SELECT * FROM applications WHERE email = $1';
+    const applications = await pool.query(queryText, [studentEmail]);
+
+    res.status(200).json(applications.rows);
+  } catch (err) {
+    console.error('Error fetching applications:', err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 module.exports = { submitApplication };
