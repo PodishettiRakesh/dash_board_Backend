@@ -1,5 +1,15 @@
 // src/controllers/adminController.js
 const pool = require('../db');
+const nodemailer = require('nodemailer');
+
+// Configure nodemailer transport
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'podishettirakesh70@msitprogram.net',
+    pass: 'Rakesh*@*062'
+  },
+});
 
 const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -29,4 +39,59 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { signup, login };
+
+// Fetch all pending applications
+const fetchPendingApplications = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM applications WHERE status = $1', ['pending']);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching applications:', error);
+    res.status(500).send('Server Error');
+  }
+};
+
+// Update application status and send email
+const updateApplicationStatus = async (req, res) => {
+  const applicationId = req.params.id;
+  const { status, email } = req.body;
+
+  try {
+    const updateQuery = 'UPDATE applications SET status = $1 WHERE id = $2 RETURNING *';
+    const result = await pool.query(updateQuery, [status, applicationId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    // Send email to the student
+    const mailOptions = {
+      from: 'podishettirakesh70@msitprogram.net',
+      to: email,
+      subject: `Application ${status.charAt(0).toUpperCase() + status.slice(1)}`,
+      text: `Dear Student,
+
+      Your application has been ${status}.
+
+      Best regards,
+      Rakesh Podishetti,
+      Admissions Team`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      console.log(info);
+      if (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).send('Error sending email');
+      } else {
+        console.log('Email sent:', info.response);
+        res.status(200).json({ message: `Application ${status} and email sent` });
+      }
+    });
+
+  } catch (error) {
+    console.error('Error updating application status:', error);
+    res.status(500).send('Server Error');
+  }
+};
+module.exports = { signup, login, fetchPendingApplications, updateApplicationStatus };

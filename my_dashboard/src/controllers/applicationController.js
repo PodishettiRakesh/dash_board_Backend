@@ -29,6 +29,7 @@ const submitApplication = async (req, res) => {
     const newApplication = await pool.query(queryText, [program_id, email, personalDetails, educationalBackground, statementOfPurpose, status]);
 
     // Send confirmation email
+    // console.log("email: ",email);
     const mailOptions = {
       from: 'podishettirakesh70@msitprogram.net',
       to: email,
