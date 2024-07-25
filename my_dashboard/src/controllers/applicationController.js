@@ -67,7 +67,11 @@ const getStudentApplications = async (req, res) => {
 
   try {
     const query = `
-      SELECT a.program_id, p.name AS program_name, a.email, a.status
+      SELECT DISTINCT ON (a.program_id) 
+             a.program_id, 
+             p.name AS program_name, 
+             a.email, 
+             a.status
       FROM applications a
       JOIN programs p ON a.program_id = p.program_id
       WHERE a.email = $1
