@@ -62,7 +62,7 @@ const submitApplication = async (req, res) => {
 
 // New function to get all applications for the logged-in student
 const getStudentApplications = async (req, res) => {
-  const studentEmail = req.user.email; // Assuming email is stored in the JWT token
+  const studentEmail = req.query;  // Get email from query parameters
 
   try {
     const queryText = 'SELECT * FROM applications WHERE email = $1';
