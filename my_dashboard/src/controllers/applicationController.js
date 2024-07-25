@@ -75,4 +75,4 @@ const getStudentApplications = async (req, res) => {
   }
 };
 
-module.exports = { submitApplication };
+module.exports = { submitApplication, getStudentApplications };
