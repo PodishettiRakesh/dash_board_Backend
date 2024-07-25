@@ -60,19 +60,28 @@ const submitApplication = async (req, res) => {
   }
 };
 
-// New function to get all applications for the logged-in student
+// controllers/applicationController.js
+
 const getStudentApplications = async (req, res) => {
-  const studentEmail = req.query;  // Get email from query parameters
+  const { email } = req.query;
 
   try {
-    const queryText = 'SELECT * FROM applications WHERE email = $1';
-    const applications = await pool.query(queryText, [studentEmail]);
+    const query = `
+      SELECT a.program_id, p.name AS program_name, a.email, a.status
+      FROM applications a
+      JOIN programs p ON a.program_id = p.program_id
+      WHERE a.email = $1
+    `;
+    const applications = await pool.query(queryText, [email]);
 
     res.status(200).json(applications.rows);
   } catch (err) {
-    console.error('Error fetching applications:', err.message);
+    console.error('Error fetching applications:', err);
     res.status(500).send('Server Error');
   }
 };
+
+module.exports = { submitApplication, getStudentApplications };
+
 
 module.exports = { submitApplication, getStudentApplications };
