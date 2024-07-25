@@ -1,5 +1,15 @@
 // src/controllers/adminController.js
 const pool = require('../db');
+const nodemailer = require('nodemailer');
+
+// Configure nodemailer transport
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'podishettirakesh70@msitprogram.net',
+    pass: 'Rakesh*@*062'
+  },
+});
 
 const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -69,6 +79,7 @@ const updateApplicationStatus = async (req, res) => {
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
+      console.log(info);
       if (error) {
         console.error('Error sending email:', error);
         return res.status(500).send('Error sending email');
@@ -83,4 +94,4 @@ const updateApplicationStatus = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
-module.exports = { signup, login };
+module.exports = { signup, login, fetchPendingApplications, updateApplicationStatus };
