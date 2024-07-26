@@ -34,7 +34,7 @@ const submitPayment = async (req, res) => {
       return res.status(404).json({ message: 'No accepted application found for the provided email and program ID' });
     }
 
-     // Send email notification
+     // Send email notification to user
      const mailOptions = {
         from: 'podishettirakesh70@msitprogram.net',
         to: email,
