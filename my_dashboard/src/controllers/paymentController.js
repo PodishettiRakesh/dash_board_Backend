@@ -1,5 +1,15 @@
 const pool = require('../db');
 
+
+// Configure nodemailer transport
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'podishettirakesh70@msitprogram.net',
+      pass: 'Rakesh*@*062'
+    },
+  });
+
 const submitPayment = async (req, res) => {
   const { email, programId, paymentOption, amount } = req.body;
 
@@ -7,6 +17,7 @@ const submitPayment = async (req, res) => {
   if (!email || !programId || !paymentOption || !amount) {
     return res.status(400).json({ message: 'All fields are required' });
   }
+
 
   try {
     // Update the application status to 'paid'
