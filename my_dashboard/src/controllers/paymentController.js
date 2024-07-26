@@ -1,4 +1,5 @@
 const pool = require('../db');
+const nodemailer = require('nodemailer');
 
 
 // Configure nodemailer transport
@@ -33,7 +34,23 @@ const submitPayment = async (req, res) => {
       return res.status(404).json({ message: 'No accepted application found for the provided email and program ID' });
     }
 
-    res.status(200).json({ message: 'Payment successful and application status updated to paid', application: result.rows[0] });
+     // Send email notification
+     const mailOptions = {
+        from: 'your-email@gmail.com',
+        to: email,
+        subject: 'Payment Received',
+        text: `Dear Student,\n\nYour payment of INR ${amount} for program ID ${programId} has been received successfully.\n\nThank you!`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+          return res.status(500).json({ message: 'Payment successful but failed to send email notification.' });
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.status(200).json({ message: 'Payment successful and application status updated to paid. Email notification sent.', application: result.rows[0] });
+        }
+      });
   } catch (error) {
     console.error('Error processing payment:', error);
     res.status(500).send('Server Error');
