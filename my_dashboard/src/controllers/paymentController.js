@@ -36,7 +36,7 @@ const submitPayment = async (req, res) => {
 
      // Send email notification
      const mailOptions = {
-        from: 'your-email@gmail.com',
+        from: 'podishettirakesh70@msitprogram.net',
         to: email,
         subject: 'Payment Received',
         text: `Dear Student,\n\nYour payment of INR ${amount} for program ID ${programId} has been received successfully.\n\nThank you!`,
