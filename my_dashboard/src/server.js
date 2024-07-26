@@ -6,9 +6,7 @@ const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const programsRoutes = require('./routes/programs');
 const applicationRoutes = require('./routes/applicationRoutes');
-
-const app = express();
-const PORT = 5000;
+const paymentRoutes = require('./routes/payment'); // Add this line
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -20,6 +18,7 @@ app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/programs', programsRoutes); // Use programs routes
 app.use('/application', applicationRoutes);
+app.use('/payment', paymentRoutes);
 
 
 app.listen(PORT, () => {
